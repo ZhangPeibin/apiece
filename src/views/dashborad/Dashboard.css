@@ -1,0 +1,51 @@
+.paper{
+    margin-top: 36px;
+    margin-left: 36px;
+    margin-right: 36px;
+    overflow: hidden;
+    display: inline-flex;
+}
+.leftCard{
+    width: 200px;
+    min-height: 100px;
+    margin-top:92px;
+    margin-left:64px;
+}
+.spacetitle{
+    width: 200px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 18px;
+    display: block;
+    text-align: center;
+}
+
+.spacecontent{
+    padding-left: 16px;
+    width: 200px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 18px;
+    display: block;
+    text-align: left;
+}
+
+.spacecontentselect{
+    padding-left: 6px;
+    width: 160px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 18px;
+    display: block;
+    text-align: left;
+}
+.spacecontenticon{
+     margin-top: 8px;
+     margin-bottom: 8px;
+     display: block;
+     text-align: left;
+ }
+.backdrop{
+    z-index: 100000;
+    color: #ffffff;
+}
