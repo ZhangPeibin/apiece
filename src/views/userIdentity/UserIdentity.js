@@ -43,9 +43,9 @@ export class UserIdentityPage extends React.Component{
     render() {
         let tips = "";
         if (this.state.isEnter){
-            tips = "登录您的空间中，可能需要等待一会..."
+            tips = "Log in to your space, it may take a while..."
         } else{
-            tips = "创建您的空间中，可能需要等待一会..."
+            tips = "It may take a while to create your space..."
         }
         return (
             <div>

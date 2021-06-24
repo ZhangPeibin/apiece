@@ -35,8 +35,8 @@ export async function getBucketKey(userIdentity:PrivateKey) {
     const bucketZone = getCurrentBucketZone();
     let buck = null;
     if(bucketZone==null){
-        buck = await buckets.getOrCreate('private.storage.zone');
-        setCurrentBucketZone('private.storage.zone')
+        buck = await buckets.getOrCreate('yours.space');
+        setCurrentBucketZone('yours.space')
     }else{
         buck = await buckets.getOrCreate(bucketZone)
     }
