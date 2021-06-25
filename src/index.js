@@ -8,7 +8,6 @@ import { createBrowserHistory } from "history";
 import CreateMnemonicPage from "./views/mnemonic/CreateMnemonic";
 import {UserIdentityPage} from "./views/userIdentity/UserIdentity";
 import ImportMnemonicPage from "./views/mnemonic/ImportMnemonic";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Dashboard from "./views/dashborad/Dashboard";
 
 const hist = createBrowserHistory();

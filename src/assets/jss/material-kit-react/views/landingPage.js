@@ -27,7 +27,12 @@ const landingPageStyle = {
     zIndex: "3",
   },
   inputCard:{
+    width:"100%",
+    marginTop:'64px',
+    marginRight:"auto",
+    marginLeft:"auto",
     zIndex:'3',
+    minWidth:'1024px',
     paddingLeft:32,
     paddingRight:32,
     paddingBottom:32,
@@ -86,6 +91,7 @@ const landingPageStyle = {
     color:"white",
     backgroundColor:"#93F",
     position: "relative",
+    float:"right",
     padding: "0.9375rem",
     fontWeight: "800",
     fontSize: "16px",
@@ -95,10 +101,6 @@ const landingPageStyle = {
     textDecoration: "none",
     margin: "0px",
     display: "inline-flex",
-    "&:hover,&:focus": {
-      color: "inherit",
-      background: "rgba(97, 0, 203,255)",
-    },
   },
   link:{
     textDecoration: "none",

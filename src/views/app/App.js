@@ -3,6 +3,7 @@ import * as React from "react";
 import {getLocalUserIdentity} from "../../common/user";
 import PrivateLandingPage from "./PrivateLandingPage";
 import {bucketLinks, getBucketKey} from "../../common/bucket";
+import Landing from "./Landing";
 
 class App  extends  React.Component{
     constructor(props){
@@ -49,7 +50,7 @@ class App  extends  React.Component{
     render() {
         if (this.state.loadingUserIdentity) {
             if (this.state.userIdentity == null) {
-                return <PrivateLandingPage/>
+                return <Landing/>
             } else {
                 return (
                     <div/>

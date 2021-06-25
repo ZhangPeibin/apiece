@@ -73,10 +73,6 @@ const headerLinksStyle = (theme) => ({
         textDecoration: "none",
         margin: "0px",
         display: "inline-flex",
-        "&:hover,&:focus": {
-            color: "inherit",
-            background: "rgba(0, 155, 204,255)",
-        },
         [theme.breakpoints.down("sm")]: {
             width: "calc(100% - 30px)",
             marginLeft: "15px",
@@ -101,10 +97,6 @@ const headerLinksStyle = (theme) => ({
         textDecoration: "none",
         margin: "0px",
         display: "inline-flex",
-        "&:hover,&:focus": {
-            color: "inherit",
-            background: "rgba(97, 0, 203,255)",
-        },
         [theme.breakpoints.down("sm")]: {
             width: "calc(100% - 30px)",
             marginLeft: "15px",
@@ -126,28 +118,26 @@ const useStyles = makeStyles(headerLinksStyle);
 export default function ActionLinks(props) {
     const mnemonic = props.user.mnemonic;
     const classes = useStyles();
+    const reset = props.reset;
     return (
         <List className={classes.list}>
             <ListItem className={classes.listItem}>
-                <Button className={classes.navLink}  variant="contained" color={"primary"}>
+                <Button className={classes.navLink} onClick={reset}  variant="contained" color={"primary"}>
                     重新创建
                 </Button>
             </ListItem>
             <ListItem className={classes.listItemRight}>
-                <Button
-                    onClick={function () {
-                        props.history.replace({
-                            pathname: "/userIdentity",
-                            state:{
-                                mnemonic:mnemonic,
-                                isEnter: false
-                            }
-                        })
-                    }}
-                    className={classes.navLinkRight}
-                    variant="contained" color={"secondary"}>
-                    下一步
-                </Button>
+                <Link to={{pathname: "/userIdentity",
+                    state:{
+                        mnemonic:mnemonic,
+                        isEnter: false
+                    }}}>
+                    <Button
+                        className={classes.navLinkRight}
+                        variant="contained" color={"secondary"}>
+                        下一步
+                    </Button>
+                </Link>
             </ListItem>
 
         </List>

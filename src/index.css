@@ -30,6 +30,7 @@ code {
     justify-content: center;
     position: absolute;
     display: flex;
+    margin-top: 36px;
     top: 50%;
     font-size: calc(10px + 2vmin);
 }

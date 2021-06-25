@@ -17,7 +17,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 const useStyles = makeStyles((theme) => ({
     root: {
         marginBottom:'16px',
-        marginTop:'92px',
         marginLeft:'32px',
         marginRight:'64px',
         padding: '2px 4px',

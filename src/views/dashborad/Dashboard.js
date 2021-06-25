@@ -13,7 +13,6 @@ import CustomizedDropZone from "../../components/CustomizedDropZone/CustomizedDr
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
-import Header from "../../components/Header/Header";
 import FileZone from "../../components/FileZone/FileZone";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -26,7 +25,7 @@ import BucketZone from "../../components/bucketzone/BucketZone";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Fab from "@material-ui/core/Fab";
+import DashboardHeader from "../../components/comps/DashboardHeader";
 const useStyles = theme => ({
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
@@ -102,17 +101,8 @@ class DashboardPage extends React.Component  {
         return (
             <div>
                 <div>
-                    <div>
-                        <Header
-                            color="transparent"
-                            brand="APiece - Store Data · Reshape Privacy"
-                            fixed
-                            changeColorOnScroll={{
-                                height: 400,
-                                color: "white",
-                            }}
-                        />
-                    </div>
+                    <DashboardHeader  exit={this.exit}/>
+                    <div className='mt-12'/>
                     <Grid
                         container
                         direction="row" justify="flex-start">
@@ -183,7 +173,6 @@ class DashboardPage extends React.Component  {
                     </div>
                 </div>
 
-                <Fab  onClick={this.exit} color="secondary" className={classes.fab}> Exit </Fab>
                 <Backdrop className={classes.backdrop} open={this.state.backDropOpen} onClick={this.handleBackDropClose}>
                     <CircularProgress color="inherit" />
                     <h2>  &nbsp;&nbsp; {this.state.backDropTips}</h2>
@@ -193,10 +182,9 @@ class DashboardPage extends React.Component  {
     }
 
     exit = ()=>{
-         localStorage.clear();
-         this.props.history.push({pathname: "/"})
+        localStorage.clear();
+        this.props.history.replace({pathname: "/landing"})
     };
-
 
     deleteFiles = async (value) => {
         const buckets = this.state.buckets;

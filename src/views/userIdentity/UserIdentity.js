@@ -43,7 +43,7 @@ export class UserIdentityPage extends React.Component{
     render() {
         let tips = "";
         if (this.state.isEnter){
-            tips = "Log in to your space, it may take a while..."
+            tips = "Log into your space, it may take a while..."
         } else{
             tips = "It may take a while to create your space..."
         }
