@@ -1,7 +1,6 @@
 import './App.css';
 import * as React from "react";
 import {getLocalUserIdentity} from "../../common/user";
-import PrivateLandingPage from "./PrivateLandingPage";
 import {bucketLinks, getBucketKey} from "../../common/bucket";
 import Landing from "./Landing";
 
@@ -37,13 +36,10 @@ class App  extends  React.Component{
             }
             loading.style.display='inline-block';
 
-            const endTime = new Date().getTime()/1000;
-            setTimeout(()=>{
-                loading.style.display = 'none';
-                this.setState({
-                    loadingUserIdentity:true
-                })
-            },1000 - (endTime-beginTime));
+            loading.style.display = 'none';
+            this.setState({
+                loadingUserIdentity:true
+            })
         }
     }
 

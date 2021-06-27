@@ -14,7 +14,7 @@ export default function Landing() {
                      }}>
                     <div className="absolute top-0 w-full h-full bg-center bg-cover"
                          style={{
-                             backgroundImage: "url('https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80')"
+                             backgroundImage: "url('https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80')"
                          }}>
                         <span id="blackOverlay" className="w-full h-full absolute opacity-75 bg-black"></span>
                     </div>
@@ -23,7 +23,7 @@ export default function Landing() {
                             <div className="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
                                 <div className="pr-12">
                                     <h1 className="text-white font-semibold text-5xl">
-                                         A space on IPFS for yours
+                                         An  IPFS  space  for yours
                                     </h1>
                                     <p className="mt-4 text-lg text-gray-300">
                                         This is a decentralized storage platform that uses mnemonics to log in. All your
