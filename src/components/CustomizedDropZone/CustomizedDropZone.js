@@ -18,12 +18,10 @@ const useStyles = makeStyles((theme) => ({
     root: {
         marginBottom:'16px',
         marginLeft:'32px',
-        marginRight:'64px',
         padding: '2px 4px',
-        paddingRight:'16px',
         display: 'flex',
         alignItems: 'center',
-        width:800
+        width:'100%px'
     },
     input: {
         marginLeft: theme.spacing(1),

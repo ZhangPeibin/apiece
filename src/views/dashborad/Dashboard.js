@@ -20,12 +20,14 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import MuiAlert from '@material-ui/lab/Alert';
 import Divider from "@material-ui/core/Divider";
 import BucketZone from "../../components/bucketzone/BucketZone";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 import DashboardHeader from "../../components/comps/DashboardHeader";
+import AlertTitle from "@material-ui/lab/AlertTitle";
 const useStyles = theme => ({
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
@@ -37,6 +39,10 @@ const useStyles = theme => ({
         right:theme.spacing(4),
     }
 });
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 class DashboardPage extends React.Component  {
     constructor(props) {
@@ -99,10 +105,14 @@ class DashboardPage extends React.Component  {
             return <div/>
         }
         return (
-            <div>
-                <div>
+            <div className="mb-16">
+                <div className="mb-16">
                     <DashboardHeader  exit={this.exit}/>
-                    <div className='mt-12'/>
+                    <div className='mt-8 '/>
+                    <Alert className={'tips mb-8'} severity="info">
+                        <AlertTitle>Don't save important data to IPFS without local backup</AlertTitle>
+                        Although we are using official reliable IPFS nodes,
+                        we can't guarantee 100% reliability. For important data, a <strong>local backup</strong> should still be stored </Alert>
                     <Grid
                         container
                         direction="row" justify="flex-start">
@@ -111,7 +121,7 @@ class DashboardPage extends React.Component  {
                             <Divider light/>
                             <BucketZone roots={this.state.bucketRoots} callback={this.changeBucket}/>
                         </Paper>
-                        <Grid direction="column">
+                        <Grid direction="column" className="mr-16">
                             <CustomizedDropZone bucketKey={this.state.bucketKey}
                                                 buckets={this.state.buckets}
                                                 callback={this.fileUploadCallback}

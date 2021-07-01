@@ -9,6 +9,12 @@
     width: 200px;
     min-height: 100px;
     margin-left:64px;
+    margin-bottom:32px;
+
+}
+.tips{
+    margin-left:64px;
+    margin-right:64px;
 }
 .spacetitle{
     width: 200px;

@@ -11,10 +11,10 @@ import Divider from "@material-ui/core/Divider";
 const useStyles = makeStyles((theme) => ({
     root: {
         marginLeft: '32px',
-        marginRight: '64px',
+        marginBottom:'32px',
         padding: '2px 4px',
         paddingRight: '16px',
-        width: 800,
+        width: '100%px',
         backgroundColor: theme.palette.background.paper,
     },
     listItem: {

@@ -16,18 +16,21 @@ export default function Landing() {
                          style={{
                              backgroundImage: "url('https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80')"
                          }}>
-                        <span id="blackOverlay" className="w-full h-full absolute opacity-75 bg-black"></span>
+                        <span id="blackOverlay" className="w-full h-full absolute opacity-50 bg-black"></span>
                     </div>
                     <div className="container relative mx-auto">
                         <div className="items-center flex flex-wrap">
-                            <div className="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
+                            <div className="w-full lg:w-5/12 px-4 ml-auto mr-auto text-center">
                                 <div className="pr-12">
-                                    <h1 className="text-white font-semibold text-5xl">
-                                         An  IPFS  space  for yours
+                                    <h1 className="mt-8 text-white font-mono text-5xl">
+                                        IPFSpace makes Storage Easy
                                     </h1>
-                                    <p className="mt-4 text-lg text-gray-300">
-                                        This is a decentralized storage platform that uses mnemonics to log in. All your
-                                        data will be stored on the next-generation storage protocol IPFS. </p>
+                                    <p className="mt-6 text-2xl text-white">
+                                        A storage platform based on IPFS </p>
+                                    <p className="mt-2 text-2xl text-white">
+                                        Use wallet's recovery phrase for security </p>
+                                    <p className="mt-1 text-2xl text-white">
+                                        by making the data storage easier,reliable,and more private. </p>
                                 </div>
                             </div>
 

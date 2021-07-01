@@ -18,24 +18,27 @@ export default  function CreateMnemonicPage(props) {
             <div>
                 <SignUpHeader/>
 
-                <div className="mt-12 container relative ">
+                <div className="mt-16 container relative mx-auto">
                     <div className=" flex flex-col ">
-                        <div className="w-full lg:w-6/12 px-4 ml-auto mr-auto ">
+                        <div className="w-full lg:w-5/12 px-4 ml-auto mr-auto text-left ">
                             <div >
-                                <h1 className="text-white font-semibold text-5xl ">
-                                    Account mnemonic
+                                <h1 className="text-white font-mono text-5xl ">
+                                    Wallet recovery phrase
                                 </h1>
-                                <p className="mt-6 mb-8 text-lg text-gray-300">
-                                    Your account mnemonic phrase is your key to log in to the storage space.
-                                    <br/>Warning:
-                                    Do not disclose your account mnemonic phrase to others. Please record the mnemonic phrase on multiple sheets of paper and keep them in 2-3 different places.
+                                <p className="mt-6 mb-8 text-lg text-white">
+                                    Your wallet recovery phrase is your key to log in to the storage space
+                                    <br/>
+                                    Do not disclose your account wallet recovery phrase to others<br/>
+                                    Please record the wallet recovery phrase on multiple sheets of paper <br/>
+                                    and keep them in 2-3 different places.
                                 </p>
+
+                                <Card className="ml-20">
+                                    <CardContent>
+                                        {mnemonic}
+                                    </CardContent>
+                                </Card>
                             </div>
-                            <Card>
-                                <CardContent>
-                                    {mnemonic}
-                                </CardContent>
-                            </Card>
                             <div className='float-right'>
                                 <ActionLinks reset={reset} user={{mnemonic}}/>
                             </div>

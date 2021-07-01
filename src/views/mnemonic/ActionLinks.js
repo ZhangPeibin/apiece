@@ -35,7 +35,6 @@ const headerLinksStyle = (theme) => ({
                 display: "block",
                 height: "1px",
                 marginLeft: "15px",
-                backgroundColor: "#e5e5e5",
             },
         },
     },
@@ -56,7 +55,7 @@ const headerLinksStyle = (theme) => ({
                 display: "block",
                 height: "1px",
                 marginLeft: "15px",
-                backgroundColor: "#e5e5e5",
+                textAlign: "center",
             },
         },
     },
@@ -80,7 +79,7 @@ const headerLinksStyle = (theme) => ({
             marginTop: "8px",
             textAlign: "left",
             "& > span:first-child": {
-                justifyContent: "flex-start",
+                justifyContent: "flex-center",
             },
         },
     },
@@ -99,12 +98,13 @@ const headerLinksStyle = (theme) => ({
         display: "inline-flex",
         [theme.breakpoints.down("sm")]: {
             width: "calc(100% - 30px)",
-            marginLeft: "15px",
             marginBottom: "8px",
             marginTop: "8px",
-            textAlign: "left",
+            textDecoration: "none",
+            textAlign: "center",
+
             "& > span:first-child": {
-                justifyContent: "flex-start",
+                justifyContent: "flex-center",
             },
         },
     },

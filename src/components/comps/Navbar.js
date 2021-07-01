@@ -66,11 +66,31 @@ export default function Navbar(props) {
             </li>
           </ul>
           <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
+
+              <li className="flex items-center">
+                  <a
+                      className={
+                          (navbarOpen
+                              ? "bg-transparent text-black"
+                              : "bg-transparent text-white ") +
+                          "text-white  text-xs font-bold uppercase  px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
+                      }
+                      type="button"
+                      style={{ transition: "all .15s ease" }}
+                      href="https://ipfs.io"
+                  >
+                      <i className="fas fa-arrow-alt-circle-down" href="https://ipfs.io"/> IPFS DOC
+                  </a>
+              </li>
+
             <li className="flex items-center">
                 <Link to={"/signin"}>
                     <button
                         className={
-                            "text-white  text-xs font-bold uppercase  px-4 py-2 bg-transparent rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
+                            (navbarOpen
+                                ? "bg-transparent text-black"
+                                : "bg-transparent text-white ") +
+                            "text-white  text-xs font-bold uppercase  px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
                         }
                         type="button"
                         style={{ transition: "all .15s ease" }}
@@ -84,7 +104,10 @@ export default function Navbar(props) {
                   <Link to={"/signup"}>
                       <button
                           className={
-                              "text-white  text-xs font-bold uppercase  px-4 py-2 bg-transparent rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
+                              (navbarOpen
+                                  ? "bg-transparent text-black"
+                                  : "bg-transparent text-white ") +
+                              " text-xs font-bold uppercase px-4 py-2 rounded shadow  hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
                           }
                           type="button"
                           style={{ transition: "all .15s ease" }}

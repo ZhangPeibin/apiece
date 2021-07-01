@@ -26,18 +26,6 @@ const landingPageStyle = {
     position: "relative",
     zIndex: "3",
   },
-  inputCard:{
-    width:"100%",
-    marginTop:'64px',
-    marginRight:"auto",
-    marginLeft:"auto",
-    zIndex:'3',
-    minWidth:'1024px',
-    paddingLeft:32,
-    paddingRight:32,
-    paddingBottom:32,
-    paddingTop:32
-  },
   input:{
     width:'100%'
   },
