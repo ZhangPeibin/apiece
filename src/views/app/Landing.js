@@ -14,9 +14,9 @@ export default function Landing() {
                      }}>
                     <div className="absolute top-0 w-full h-full bg-center bg-cover"
                          style={{
-                             backgroundImage: "url('https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80')"
+                             backgroundImage: "url('https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=967&q=80')"
                          }}>
-                        <span id="blackOverlay" className="w-full h-full absolute opacity-50 bg-black"></span>
+                        <span id="blackOverlay" className="w-full h-full absolute opacity-25 bg-black"></span>
                     </div>
                     <div className="container relative mx-auto">
                         <div className="items-center flex flex-wrap">
