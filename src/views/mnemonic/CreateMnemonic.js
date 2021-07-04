@@ -22,10 +22,10 @@ export default  function CreateMnemonicPage(props) {
                     <div className=" flex flex-col ">
                         <div className="w-full lg:w-5/12 px-4 ml-auto mr-auto text-left ">
                             <div >
-                                <h1 className="text-white font-mono text-5xl ">
+                                <h1 className="text-black font-mono text-5xl ">
                                     Wallet recovery phrase
                                 </h1>
-                                <p className="mt-6 mb-8 text-lg text-white">
+                                <p className="mt-6 mb-8 text-lg text-black">
                                     Your wallet recovery phrase is your key to log in to the storage space
                                     <br/>
                                     Do not disclose your account wallet recovery phrase to others<br/>
@@ -33,13 +33,13 @@ export default  function CreateMnemonicPage(props) {
                                     and keep them in 2-3 different places.
                                 </p>
 
-                                <Card className="ml-20">
+                                <Card className="ml-20 w-1/2">
                                     <CardContent>
                                         {mnemonic}
                                     </CardContent>
                                 </Card>
                             </div>
-                            <div className='float-right'>
+                            <div className="w-1/2 mt-8 lg:w-5/12 px-4 mr-auto text-right">
                                 <ActionLinks reset={reset} user={{mnemonic}}/>
                             </div>
                         </div>

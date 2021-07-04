@@ -1,10 +1,5 @@
 import React, {useCallback} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import Button from "@material-ui/core/Button";
 import Dropzone from "react-dropzone";
@@ -13,45 +8,45 @@ import {CreateNewFolder, Delete, ExpandMore} from "@material-ui/icons";
 import Box from "@material-ui/core/Box";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import {getCurrentBucketZone} from "../../common/bucket";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        marginBottom:'16px',
-        marginLeft:'32px',
-        padding: '2px 4px',
+        marginBottom:'10px',
         display: 'flex',
-        alignItems: 'center',
-        width:'100%px'
+        marginLeft:"32px"
     },
-    input: {
-        marginLeft: theme.spacing(1),
-        flex: 1,
-        width: 300,
-    },
-    iconButton: {
-        padding: 10,
-    },
-    divider: {
-        height: 28,
-        marginLeft: 16,
-        marginRight:16,
-        marginTop:4,
-        marginBottom:4
+    selected: {
+        width: "100 %",
+        height: "100 %",
+        backgroundColor: "#fff",
+        color: "black",
+        appearance: "none",
+        border: 0,
+        display: "block",
+        position: "relative",
+        mozAppearance:"none",
+        webkitAppearance:"none",
+        boxShadow:"none",
+        outline:"none",
+        "&:hover,&:focus": {
+            color: "black",
+            mozAppearance:"none",
+            webkitAppearance:"none",
+            outline:"none",
+            boxShadow:"none",
+            border: 0,
+        },
     },
     box:{
       width:16
     },
     button:{
         textTransform:'none',
+        zIndex:0,
     },
     actionbutton:{
-        color:'white',
         textTransform:'none',
-        backgroundColor:"#93F",
-        "&:hover,&:focus": {
-            color: "white",
-            background: "rgba(153, 51, 255,255)",
-        },
     },
     dropzone:{
     }
@@ -67,6 +62,10 @@ export default function CustomizedDropZone(props) {
     const deleteBucket = props.deleteBucket;
     const deleteFiles = props.deleteFiles;
 
+    const bucketRoots = props.roots;
+    const changeBucketCallBack = props.changeBucketCallBack;
+    const currentBucketPath = getCurrentBucketZone();
+
     const selectAll= checked==null?0:checked.length>0;
     let menus = [];
 
@@ -81,7 +80,7 @@ export default function CustomizedDropZone(props) {
 
     if(checked!=null){
         if(checked.length===1){
-            menus.push( (<MenuItem onClick={handleClose}>{'Rename'}</MenuItem>))
+            // menus.push( (<MenuItem onClick={handleClose}>{'Rename'}</MenuItem>))
             menus.push( (<MenuItem onClick={handleDelete}>{'Delete'}</MenuItem>))
         }else{
             menus.push( (<MenuItem onClick={handleDelete}>{'Delete'}</MenuItem>))
@@ -101,25 +100,28 @@ export default function CustomizedDropZone(props) {
         setAnchorEl(event.currentTarget);
     };
 
+    let selectOptions = []
+    if(bucketRoots !=null ){
+        bucketRoots.forEach(function (value) {
+            selectOptions.push((<option value={value.name}>{value.name}</option>));
+        })
+    }
+
+    const handleChange = (event) => {
+        changeBucketCallBack(event.target.value);
+    };
 
 
     return (
-        <Paper component="form" className={classes.root}>
-            <IconButton className={classes.iconButton} aria-label="menu">
-                <SearchIcon />
-            </IconButton>
-            <InputBase
-                className={classes.input}
-                placeholder="Search files"
-                inputProps={{ 'aria-label': 'search google maps' }}
-            />
-            {/*<IconButton type="submit" className={classes.iconButton} aria-label="search">*/}
-                {/*<SearchIcon />*/}
-            {/*</IconButton>*/}
-            <Divider className={classes.divider} orientation="vertical" />
-            {/*<IconButton color="primary" className={classes.iconButton} aria-label="directions">*/}
-                {/*<DirectionsIcon />*/}
-            {/*</IconButton>*/}
+        <div className={classes.root}>
+            <select
+                onChange = {handleChange}
+                className={classes.selected}
+                defaultValue={currentBucketPath}
+            >
+                {selectOptions}
+            </select>
+            <Box className={classes.box}/>
 
             <Dropzone
                 className={classes.dropzone}
@@ -130,7 +132,8 @@ export default function CustomizedDropZone(props) {
                     <div className="dropzone" {...getRootProps()}>
                         <input {...getInputProps()} />
                         <Button
-                            variant="contained"
+                            disableElevation
+                            variant="outlined"
                             color={"secondary"}
                             size={'medium'}
                             className={classes.button}
@@ -143,9 +146,10 @@ export default function CustomizedDropZone(props) {
             <Box className={classes.box}/>
             <Button
                 onClick={newFolder}
-                variant="contained"
+                variant="outlined"
                 color={"primary"}
                 size={'medium'}
+                disableElevation
                 className={classes.button}
                 startIcon={<CreateNewFolder/>}>
                 New Space
@@ -153,9 +157,10 @@ export default function CustomizedDropZone(props) {
             <Box className={classes.box}/>
             <Button
                 onClick={deleteBucket}
-                variant="contained"
+                variant="outlined"
                 color={"primary"}
                 size={'medium'}
+                disableElevation
                 className={classes.button}
                 startIcon={<Delete/>}>
                 Delete Space
@@ -164,7 +169,8 @@ export default function CustomizedDropZone(props) {
             <Button
                 aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}
                 className={classes.actionbutton}
-                variant="contained"
+                variant= {selectAll?"outlined":"contained"}
+                disableElevation
                 disabled={!selectAll}
                 size={'medium'}
                 endIcon={<ExpandMore/>}>
@@ -180,6 +186,6 @@ export default function CustomizedDropZone(props) {
                     menus
                 }
             </Menu>
-        </Paper>
+        </div>
     );
 }
