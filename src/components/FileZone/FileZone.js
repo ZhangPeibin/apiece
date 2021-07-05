@@ -14,19 +14,24 @@ const useStyles = makeStyles((theme) => ({
         marginBottom:'32px',
         padding: '2px 4px',
         paddingRight: '16px',
-        width: '100%px',
+        width: '100%',
         backgroundColor: theme.palette.background.paper,
     },
     listItem: {
         height: 40
     },
     checkboxlistlabelname: {
-        width: 500,
+        width: '100%px',
     },
     listDate: {
-        width: 200,
+        width: 400,
+        alignItems: "left",
+    },
+    modified: {
+        width: 400,
         alignItems: "left",
     }
+
 }));
 
 export default function FileZone(props) {
@@ -87,9 +92,9 @@ export default function FileZone(props) {
                         inputProps={{'aria-labelledby': 'all_check'}}
                     />
                 </ListItemIcon>
-                <ListItemText className={classes.checkboxlistlabelname} primary={`Name`}/>
-                <ListItemText className={classes.listDate} primary={`Last Modified`}/>
-                <ListItemText primary={`Size`}/>
+                <ListItemText className="w-full" primary={`Name`}/>
+                <ListItemText className={classes.listDate} primary={`Size`}/>
+                <ListItemText className={classes.modified} primary={`Last Modified`}/>
             </ListItem>
             <Divider component="li"/>
 
@@ -102,6 +107,7 @@ export default function FileZone(props) {
                                 className={classes.listItem} key={value} role={undefined} dense button>
                                 <ListItemIcon>
                                     <Checkbox
+                                        color={"secondary"}
                                         onChange={handleToggle(value)}
                                         edge="start"
                                         checked={allSelect || checked.indexOf(value) !== -1}
@@ -112,14 +118,15 @@ export default function FileZone(props) {
                                 </ListItemIcon>
                                 <ListItemText
                                     onClick={(event)=>handleItemClick(value)}
-                                    className={classes.checkboxlistlabelname} id={labelId}
+                                    className="w-full" id={labelId}
                                               primary={value['name']}/>
                                 <ListItemText
                                     onClick={(event)=>handleItemClick(value)}
-                                    className={classes.listDate} primary={value['date']}/>
+                                    className={classes.listDate}
+                                    primary={getFileSize(value['size'])}/>
                                 <ListItemText
                                     onClick={(event)=>handleItemClick(value)}
-                                    primary={getFileSize(value['size'])}/>
+                                    className={classes.modified} primary={value['date']}/>
                             </ListItem>
                         );
                     })}

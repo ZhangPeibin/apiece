@@ -88,10 +88,10 @@ export default function ImportMnemonicPage(props) {
                     <div className=" flex flex-col ">
                         <div className="w-full lg:w-5/12 px-4 ml-auto mr-auto text-left ">
                             <div>
-                                <h1 className="text-white font-semibold text-5xl ">
+                                <h1 className="text-black font-semibold text-5xl ">
                                     Enter Wallet recovery phrase
                                 </h1>
-                                <p className="mt-6 text-lg text-white">
+                                <p className="mt-6 text-lg text-black">
                                     Each word of the Wallet recovery phrase aid needs to be separated by a
                                     space<br/>
                                     Do not disclose your Wallet recovery phrase to others<br/>
@@ -99,39 +99,35 @@ export default function ImportMnemonicPage(props) {
                                     account, they can view the data you uploaded. </p>
                             </div>
 
-                            <Card className="p-4 mt-10">
-                                <TextField
+                            <Card className="p-4 mt-10 w-1/2">
+                                <input
                                     onChange={function (value) {
                                         setInput(value.target.value);
                                     }}
-                                    className={classes.input}
+                                    className="border-gray-600  bg-transparent focus:border-gray-600 outline-none"
                                     label="Wallet recovery phrase"
                                     id="outlined-textarea"
-                                    placeholder="Placeholder"
+                                    placeholder="wallet recovery phrase"
                                     multiline
                                     variant="outlined"
                                 />
                             </Card>
 
-                            <div className="float-right">
-                                <List className={classes.list}>
-                                    <ListItem className={classes.listItemRight}>
-                                        <Button
-                                            onClick={function () {
-                                                props.history.replace({
-                                                    pathname: "/userIdentity",
-                                                    state: {
-                                                        mnemonic: input,
-                                                        isEnter: true
-                                                    }
-                                                })
-                                            }}
-                                            className={classes.navLinkRight}
-                                            variant="contained" color={"secondary"}>
-                                            下一步
-                                        </Button>
-                                    </ListItem>
-                                </List>
+                            <div className="w-1/2 mt-8 lg:w-5/12 px-4 mr-auto text-right ">
+                                <Button
+                                    onClick={function () {
+                                        props.history.replace({
+                                            pathname: "/userIdentity",
+                                            state: {
+                                                mnemonic: input,
+                                                isEnter: true
+                                            }
+                                        })
+                                    }}
+                                    className={classes.navLinkRight}
+                                    variant="contained" color={"secondary"}>
+                                    下一步
+                                </Button>
                             </div>
                         </div>
                     </div>

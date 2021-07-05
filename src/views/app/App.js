@@ -14,7 +14,6 @@ class App  extends  React.Component{
     }
 
     async componentWillMount() {
-        const beginTime = new Date().getTime()/1000;
         const localUserIdentity = await getLocalUserIdentity();
         this.setState({
                 userIdentity:localUserIdentity

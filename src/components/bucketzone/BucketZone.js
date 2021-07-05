@@ -3,7 +3,6 @@ import Divider from "@material-ui/core/Divider";
 import {getCurrentBucketZone} from "../../common/bucket";
 import Grid from "@material-ui/core/Grid";
 import {ArrowRightAlt} from "@material-ui/icons";
-import Button from "@material-ui/core/Button";
 
 export default function BucketZone(props) {
 

@@ -9,6 +9,7 @@ import CreateMnemonicPage from "./views/mnemonic/CreateMnemonic";
 import {UserIdentityPage} from "./views/userIdentity/UserIdentity";
 import ImportMnemonicPage from "./views/mnemonic/ImportMnemonic";
 import Dashboard from "./views/dashborad/Dashboard";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const hist = createBrowserHistory();
 ReactDOM.render(

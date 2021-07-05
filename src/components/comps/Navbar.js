@@ -1,6 +1,5 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import Button from "@material-ui/core/Button";
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
@@ -33,7 +32,7 @@ export default function Navbar(props) {
                 (props.transparent ? "text-white" : "text-gray-800") +
                 " fas fa-bars"
               }
-            >≡</h2>
+            ></h2>
           </button>
         </div>
         <div
@@ -53,15 +52,6 @@ export default function Navbar(props) {
                   " px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
                 }
               >
-                <i
-                  className={
-                    (props.transparent
-                      ? "lg:text-gray-300 text-gray-500"
-                      : "text-gray-500") +
-                    " far fa-file-alt text-lg leading-lg mr-2"
-                  }
-                />{" "}
-                {/*Docs*/}
               </a>
             </li>
           </ul>
@@ -76,10 +66,11 @@ export default function Navbar(props) {
                           "text-white  text-xs font-bold uppercase  px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
                       }
                       type="button"
+                      target="_blank"
                       style={{ transition: "all .15s ease" }}
                       href="https://ipfs.io"
                   >
-                      <i className="fas fa-arrow-alt-circle-down" href="https://ipfs.io"/> IPFS DOC
+                      <a className="" target="_blank" href="https://ipfs.io"/> IPFS DOC
                   </a>
               </li>
 
@@ -95,7 +86,7 @@ export default function Navbar(props) {
                         type="button"
                         style={{ transition: "all .15s ease" }}
                     >
-                        <i className="fas fa-arrow-alt-circle-down"></i> Sign In
+                       Sign In
                     </button>
                 </Link>
             </li>
@@ -112,7 +103,7 @@ export default function Navbar(props) {
                           type="button"
                           style={{ transition: "all .15s ease" }}
                       >
-                          <i className="fas fa-arrow-alt-circle-down"></i> Sign Up
+                          Sign Up
                       </button>
                   </Link>
               </li>

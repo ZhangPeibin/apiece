@@ -32,7 +32,8 @@ async function handleNewFile(file: File, buckets: Buckets, bucketKey: string, ca
                 name: filename,
                 path: location,
                 size: file.size,
-                date: (new Date()).toLocaleString()
+                date: (new Date()).toLocaleString(),
+                type: file.type
             };
             callback(metadata);
         })

@@ -18,16 +18,15 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
 import MuiAlert from '@material-ui/lab/Alert';
-import Divider from "@material-ui/core/Divider";
-import BucketZone from "../../components/bucketzone/BucketZone";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 import DashboardHeader from "../../components/comps/DashboardHeader";
-import AlertTitle from "@material-ui/lab/AlertTitle";
+import {isFileDocument, isFileImage, isFileOther} from "../../common/fileutil";
+import {isFileVideo} from "../../common/fileutil";
+import Sidebar from "../../components/Sidebar";
+import {Slider} from "@material-ui/core";
 const useStyles = theme => ({
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
@@ -43,6 +42,13 @@ const useStyles = theme => ({
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
+
+export const ALL_FILES = "ALL FILES"
+export const IMAGE = "IMAGE"
+export const VIDEO = "VIDEO"
+export const DOCUMENT = "DOCUMENT"
+export const OTHER = "OTHER"
+
 
 class DashboardPage extends React.Component  {
     constructor(props) {
@@ -60,10 +66,13 @@ class DashboardPage extends React.Component  {
         }
     }
 
+
+
     async componentWillMount() {
         this.setState({
                 bucketDialogTips:"Use this space ?",
-                isChangeBucket : true
+                isChangeBucket : true,
+                currentType :ALL_FILES
             }
         );
 
@@ -91,11 +100,11 @@ class DashboardPage extends React.Component  {
         const index = await getFileIndex(this.state.buckets, this.state.bucketKey);
         if (index) {
             this.setState({
-                index: index
+                index: index,
             })
+            this.filterFile(ALL_FILES);
         }
     }
-
 
     render() {
 
@@ -105,82 +114,154 @@ class DashboardPage extends React.Component  {
             return <div/>
         }
         return (
-            <div className="mb-16">
-                <div className="mb-16">
-                    <DashboardHeader  exit={this.exit}/>
-                    <div className='mt-8 '/>
-                    <Alert className={'tips mb-8'} severity="info">
-                        <AlertTitle>Don't save important data to IPFS without local backup</AlertTitle>
-                        Although we are using official reliable IPFS nodes,
-                        we can't guarantee 100% reliability. For important data, a <strong>local backup</strong> should still be stored </Alert>
-                    <Grid
-                        container
-                        direction="row" justify="flex-start">
-                        <Paper className={'leftCard'}>
-                            <span className={'spacetitle'}>Spaces</span>
-                            <Divider light/>
-                            <BucketZone roots={this.state.bucketRoots} callback={this.changeBucket}/>
-                        </Paper>
-                        <Grid direction="column" className="mr-16">
-                            <CustomizedDropZone bucketKey={this.state.bucketKey}
-                                                buckets={this.state.buckets}
-                                                callback={this.fileUploadCallback}
-                                                newFolder={this.newFolder}
-                                                checked={this.state.checked}
-                                                deleteFiles={this.deleteFiles}
-                                                deleteBucket={this.deleteBucketConfirm}/>
-                            <FileZone index={this.state.index} callback={this.fileSelectCallback}/>
-                        </Grid>
-                    </Grid>
+            <div className="h-screen bg-white">
+                <div className="h-screen">
                     <div>
-                        <Dialog open={this.state.dialogOpen} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-                            <DialogTitle id="form-dialog-title">New Folder</DialogTitle>
-                            <DialogContent>
-                                <DialogContentText>
-                                    Please enter the folder name, for better use, Please enter English.
-                                </DialogContentText>
-                                <TextField
-                                    onChange={this.folderInputChange}
-                                    autoFocus
-                                    margin="dense"
-                                    id="name"
-                                    label="Folder Name"
-                                    type="text"
-                                    fullWidth
-                                />
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={this.handleClose} color="primary">
-                                    Cancel
-                                </Button>
-                                <Button onClick={this.handleConfirm.bind(this)} color="primary">
-                                    Confirm
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
+                        <Sidebar loginOut={this.exit} changeFileType={this.changeFileType} currentFileType={this.state.currentType}/>
+                        <div className="relative md:ml-64">
+                            <DashboardHeader search={this.search}/>
+                            <div className="relative md:pt-32 pb-32 pt-12">
+                                <CustomizedDropZone bucketKey={this.state.bucketKey}
+                                                    buckets={this.state.buckets}
+                                                    callback={this.fileUploadCallback}
+                                                    newFolder={this.newFolder}
+                                                    checked={this.state.checked}
+                                                    deleteFiles={this.deleteFiles}
+                                                    deleteBucket={this.deleteBucketConfirm}
+                                                    roots={this.state.bucketRoots}
+                                                    changeBucketCallBack={this.changeBucket}/>
+                                <FileZone index={this.state.copyIndex} callback={this.fileSelectCallback}/>
+                            </div>
 
-                        <Dialog
-                            open={this.state.changeSpaceDialogOpen}
-                            onClose={this.handleChangeSpaceClose}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{this.state.bucketDialogTips}</DialogTitle>
-                            <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                    This is a confirmation popup, if you sure, just click confirm.
-                                </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={this.handleChangeSpaceClose} color="primary">
-                                    Cancel
-                                </Button>
-                                <Button onClick={this.handleChangeSpaceConfirm} color="primary">
-                                    Confirm
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
+                            {/*<div className="relative bg-pink-600 md:pt-32 pb-32 pt-12">*/}
+                            {/*    /!*<div className="relative bg-gray-100">*!/*/}
+                            {/*    /!*    <div className="items-end mt-10 ">*!/*/}
+                            {/*    /!*        <a onClick={this.changeFileType.bind(this,ALL_FILES)}*!/*/}
+                            {/*    /!*           className={*!/*/}
+                            {/*    /!*               this.state.currentType === ALL_FILES*!/*/}
+                            {/*    /!*                   ? "font-bold"*!/*/}
+                            {/*    /!*                   : "font-mono" +*!/*/}
+                            {/*    /!*                   "text-base  leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"*!/*/}
+                            {/*    /!*           }*!/*/}
+                            {/*    /!*        >*!/*/}
+                            {/*    /!*            {ALL_FILES}*!/*/}
+                            {/*    /!*        </a>*!/*/}
+                            {/*    /!*    </div>*!/*/}
+                            {/*    /!*    <div className="items-end mt-1" onClick={this.changeFileType.bind(this,IMAGE)}>*!/*/}
+                            {/*    /!*        <a*!/*/}
+                            {/*    /!*            className={*!/*/}
+                            {/*    /!*                this.state.currentType === IMAGE*!/*/}
+                            {/*    /!*                    ? "font-bold"*!/*/}
+                            {/*    /!*                    : "font-mono" +*!/*/}
+                            {/*    /!*                    "text-base leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"*!/*/}
+                            {/*    /!*            }*!/*/}
+                            {/*    /!*        >*!/*/}
+                            {/*    /!*            {IMAGE}*!/*/}
+                            {/*    /!*        </a>*!/*/}
+                            {/*    /!*    </div>*!/*/}
+                            {/*    */}
+                            {/*    /!*    <div className="items-end mt-1" onClick={this.changeFileType.bind(this,VIDEO)}>*!/*/}
+                            {/*    /!*        <a*!/*/}
+                            {/*    /!*            className={*!/*/}
+                            {/*    /!*                this.state.currentType === VIDEO*!/*/}
+                            {/*    /!*                    ? "font-bold"*!/*/}
+                            {/*    /!*                    : "font-mono" +*!/*/}
+                            {/*    /!*                    "text-base leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"*!/*/}
+                            {/*    /!*            }*!/*/}
+                            {/*    /!*        >*!/*/}
+                            {/*    /!*            {VIDEO}*!/*/}
+                            {/*    /!*        </a>*!/*/}
+                            {/*    /!*    </div>*!/*/}
+                            {/*    */}
+                            {/*    /!*    <div className="items-end" onClick={this.changeFileType.bind(this,DOCUMENT)}>*!/*/}
+                            {/*    /!*        <a*!/*/}
+                            {/*    /!*            className={*!/*/}
+                            {/*    /!*                this.state.currentType === DOCUMENT*!/*/}
+                            {/*    /!*                    ? "font-bold"*!/*/}
+                            {/*    /!*                    : "font-mono" +*!/*/}
+                            {/*    /!*                    "text-sm  leading-relaxed inline-block mr-4 py-2  uppercase"*!/*/}
+                            {/*    /!*            }*!/*/}
+                            {/*    /!*        >*!/*/}
+                            {/*    /!*            {DOCUMENT}*!/*/}
+                            {/*    /!*        </a>*!/*/}
+                            {/*    /!*    </div>*!/*/}
+                            {/*    */}
+                            {/*    /!*    <div className="items-end" onClick={this.changeFileType.bind(this,OTHER)}>*!/*/}
+                            {/*    /!*        <a*!/*/}
+                            {/*    /!*            className={*!/*/}
+                            {/*    /!*                this.state.currentType === OTHER*!/*/}
+                            {/*    /!*                    ? "font-bold"*!/*/}
+                            {/*    /!*                    : "font-mono" +*!/*/}
+                            {/*    /!*                    "text-sm  leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"*!/*/}
+                            {/*    /!*            }*!/*/}
+                            {/*    /!*        >*!/*/}
+                            {/*    /!*            {OTHER}*!/*/}
+                            {/*    /!*        </a>*!/*/}
+                            {/*    /!*    </div>*!/*/}
+                            {/*    /!*</div>*!/*/}
+                            {/*    <div className="relative w-full mt-10  flex justify-between lg:w-auto lg:static lg:block lg:justify-end ">*/}
+                            {/*        <div>*/}
+                            {/*            */}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                        </div>
+                        <div>
+                            <Dialog open={this.state.dialogOpen} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                                <DialogTitle id="form-dialog-title">New Folder</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText>
+                                        Please enter the folder name, for better use, Please enter English.
+                                    </DialogContentText>
+                                    <TextField
+                                        onChange={this.folderInputChange}
+                                        autoFocus
+                                        margin="dense"
+                                        id="name"
+                                        label="Folder Name"
+                                        type="text"
+                                        fullWidth
+                                    />
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={this.handleClose} color="primary">
+                                        Cancel
+                                    </Button>
+                                    <Button onClick={this.handleConfirm.bind(this)} color="primary">
+                                        Confirm
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+
+                            <Dialog
+                                open={this.state.changeSpaceDialogOpen}
+                                onClose={this.handleChangeSpaceClose}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">{this.state.bucketDialogTips}</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText id="alert-dialog-description">
+                                        This is a confirmation popup, if you sure, just click confirm.
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={this.handleChangeSpaceClose} color="primary">
+                                        Cancel
+                                    </Button>
+                                    <Button onClick={this.handleChangeSpaceConfirm} color="primary">
+                                        Confirm
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                        </div>
                     </div>
+
+                    {/*<Alert className={'tips mb-8'} severity="info">*/}
+                    {/*    <AlertTitle>Don't save important data to IPFS without local backup</AlertTitle>*/}
+                    {/*    Although we are using official reliable IPFS nodes,*/}
+                    {/*    we can't guarantee 100% reliability. For important data, a <strong>local backup</strong> should still be stored </Alert>*/}
+
                 </div>
 
                 <Backdrop className={classes.backdrop} open={this.state.backDropOpen} onClick={this.handleBackDropClose}>
@@ -189,6 +270,93 @@ class DashboardPage extends React.Component  {
                 </Backdrop>
             </div>
         );
+    }
+
+    search = (value)=>{
+        if(value){
+            const searchResult =  this.state.copyIndex.paths.filter(val => val['name'].match(value));
+            this.setState({
+                copyIndex: {
+                    ...this.state.index,
+                    paths: searchResult,
+                    counts: searchResult.length
+                }
+            })
+        }else{
+            this.filterFile(this.state.currentType)
+        }
+    }
+
+    filterFile = (value)=>{
+        const fileType = value;
+        if(fileType === ALL_FILES){
+            this.setState({
+                copyIndex :this.state.index
+            })
+        }else if(fileType === IMAGE){
+            let copyBucketRoots = []
+            this.state.index.paths.forEach(function (value) {
+                if(isFileImage(value['type'])){
+                    copyBucketRoots.push(value)
+                }
+            })
+            this.setState({
+                copyIndex: {
+                    ...this.state.index,
+                    paths: copyBucketRoots,
+                    counts: copyBucketRoots.length
+                }
+            })
+        }else if(fileType === VIDEO){
+            let copyBucketRoots = []
+            this.state.index.paths.forEach(function (value) {
+                if(isFileVideo(value['type'])){
+                    copyBucketRoots.push(value)
+                }
+            })
+            this.setState({
+                copyIndex: {
+                    ...this.state.index,
+                    paths: copyBucketRoots,
+                    counts: copyBucketRoots.length
+                }
+            })
+        }else if(fileType === DOCUMENT){
+            let copyBucketRoots = []
+            this.state.index.paths.forEach(function (value) {
+                if(isFileDocument(value['type'])){
+                    copyBucketRoots.push(value)
+                }
+            })
+            this.setState({
+                copyIndex: {
+                    ...this.state.index,
+                    paths: copyBucketRoots,
+                    counts: copyBucketRoots.length
+                }
+            })
+        }else{
+            let copyBucketRoots = []
+            this.state.index.paths.forEach(function (value) {
+                if(isFileOther(value['type'])){
+                    copyBucketRoots.push(value)
+                }
+            })
+            this.setState({
+                copyIndex: {
+                    ...this.state.index,
+                    paths: copyBucketRoots,
+                    counts: copyBucketRoots.length
+                }
+            })
+        }
+    }
+
+    changeFileType = (value)=>{
+        this.setState({
+            currentType :value
+        })
+        this.filterFile(value);
     }
 
     exit = ()=>{
@@ -229,6 +397,8 @@ class DashboardPage extends React.Component  {
                     counts: copyIndexPaths.length
                 },
             })
+            this.filterFile(this.state.currentType)
+
             await storeIndex(this.state.index, this.state.buckets, this.state.bucketKey);
             this.setState({
                 backDropTips:"Change Bucket ..."
@@ -296,17 +466,18 @@ class DashboardPage extends React.Component  {
             if(value!=null){
                 this.backDropToggle(true);
                 const userIdentity = await getLocalUserIdentity();
-                const {bucketKey, buckets} = await getBucketKeyByBucketRoot(userIdentity, value.name);
+                const {bucketKey, buckets} = await getBucketKeyByBucketRoot(userIdentity, value);
                 this.setState({
                     bucketKey: bucketKey,
                     buckets: buckets,
                 });
-                setCurrentBucketZone(value.name);
+                setCurrentBucketZone(value);
                 const index = await getFileIndex(this.state.buckets, this.state.bucketKey);
                 if (index) {
                     this.setState({
                         index: index
                     })
+                    this.filterFile(ALL_FILES)
                 }
                 this.backDropToggle(false);
             }
@@ -356,6 +527,8 @@ class DashboardPage extends React.Component  {
         await this.handleChangeSpaceConfirm();
     };
 
+
+
     fileUploadCallback = async (data) => {
         let dataAlreadyInPaths = false;
         this.state.index.paths.forEach(function (element) {
@@ -371,6 +544,7 @@ class DashboardPage extends React.Component  {
                     counts: this.state.index.counts + 1
                 },
             });
+            this.filterFile(this.state.currentType)
             await storeIndex(this.state.index, this.state.buckets, this.state.bucketKey);
         }
     }
