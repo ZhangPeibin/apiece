@@ -83,6 +83,7 @@ export default function FileZone(props) {
 
     return (
         <List className={classes.root}>
+            <Divider />
             <ListItem className={classes.listItem}>
                 <ListItemIcon>
                     <Checkbox

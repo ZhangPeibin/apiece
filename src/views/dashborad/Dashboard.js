@@ -3,13 +3,14 @@ import './Dashboard.css'
 import {getLocalUserIdentity,} from "../../common/user";
 import {
     bucketList,
-    deleteBucket, deleteBucketZone,
+    deleteBucket,
+    deleteBucketZone,
     getBucketKey,
-    getBucketKeyByBucketRoot, removeBucketPath,
+    getBucketKeyByBucketRoot,
+    removeBucketPath,
     setCurrentBucketZone
 } from "../../common/bucket";
 import {getFileIndex, storeIndex} from "../../common/FileIndex";
-import CustomizedDropZone from "../../components/CustomizedDropZone/CustomizedDropZone";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
@@ -23,19 +24,20 @@ import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 import DashboardHeader from "../../components/comps/DashboardHeader";
-import {isFileDocument, isFileImage, isFileOther} from "../../common/fileutil";
-import {isFileVideo} from "../../common/fileutil";
+import {isFileDocument, isFileImage, isFileOther, isFileVideo} from "../../common/fileutil";
 import Sidebar from "../../components/Sidebar";
-import {Slider} from "@material-ui/core";
+import {onDropToUpload} from "../../common/upload";
+import Divider from "@material-ui/core/Divider";
+
 const useStyles = theme => ({
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
-    fab:{
-        position:'absolute',
-        bottom:theme.spacing(4),
-        right:theme.spacing(4),
+    fab: {
+        position: 'absolute',
+        bottom: theme.spacing(4),
+        right: theme.spacing(4),
     }
 });
 
@@ -50,7 +52,7 @@ export const DOCUMENT = "DOCUMENT"
 export const OTHER = "OTHER"
 
 
-class DashboardPage extends React.Component  {
+class DashboardPage extends React.Component {
     constructor(props) {
         super(props);
         if (props.location.query != null) {
@@ -60,19 +62,18 @@ class DashboardPage extends React.Component  {
                 links: props.location.query.links,
                 dialogOpen: false,
                 changeSpaceDialogOpen: false,
-                backDropOpen : false,
+                backDropOpen: false,
                 backDropTips: "Change Bucket ..."
             }
         }
     }
 
 
-
     async componentWillMount() {
         this.setState({
-                bucketDialogTips:"Use this space ?",
-                isChangeBucket : true,
-                currentType :ALL_FILES
+                bucketDialogTips: "Use this space ?",
+                isChangeBucket: true,
+                currentType: ALL_FILES
             }
         );
 
@@ -108,7 +109,7 @@ class DashboardPage extends React.Component  {
 
     render() {
 
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         if (this.state == null || this.state.buckets == null || this.state.bucketKey == null) {
             return <div/>
@@ -117,110 +118,37 @@ class DashboardPage extends React.Component  {
             <div className="h-screen bg-white">
                 <div className="h-screen">
                     <div>
-                        <Sidebar loginOut={this.exit} changeFileType={this.changeFileType} currentFileType={this.state.currentType}/>
+                        <Sidebar loginOut={this.exit}
+                                 changeFileType={this.changeFileType}
+                                 currentFileType={this.state.currentType}
+                                 newFolder={this.newFolder}
+                                 deleteBucket={this.deleteBucketConfirm}/>
                         <div className="relative md:ml-64">
-                            <DashboardHeader search={this.search}/>
-                            <div className="relative md:pt-32 pb-32 pt-12">
-                                <CustomizedDropZone bucketKey={this.state.bucketKey}
-                                                    buckets={this.state.buckets}
-                                                    callback={this.fileUploadCallback}
-                                                    newFolder={this.newFolder}
-                                                    checked={this.state.checked}
-                                                    deleteFiles={this.deleteFiles}
-                                                    deleteBucket={this.deleteBucketConfirm}
-                                                    roots={this.state.bucketRoots}
-                                                    changeBucketCallBack={this.changeBucket}/>
+                            <DashboardHeader search={this.search}
+                                             roots={this.state.bucketRoots}
+                                             changeBucketCallBack={this.changeBucket}
+                                             onDrop={this.onDrop.bind(this)}
+                                             checked={this.state.checked}
+                                             deleteFiles={this.deleteFiles}
+                                             />
+                            <div className="actionarea">
                                 <FileZone index={this.state.copyIndex} callback={this.fileSelectCallback}/>
                             </div>
-
-                            {/*<div className="relative bg-pink-600 md:pt-32 pb-32 pt-12">*/}
-                            {/*    /!*<div className="relative bg-gray-100">*!/*/}
-                            {/*    /!*    <div className="items-end mt-10 ">*!/*/}
-                            {/*    /!*        <a onClick={this.changeFileType.bind(this,ALL_FILES)}*!/*/}
-                            {/*    /!*           className={*!/*/}
-                            {/*    /!*               this.state.currentType === ALL_FILES*!/*/}
-                            {/*    /!*                   ? "font-bold"*!/*/}
-                            {/*    /!*                   : "font-mono" +*!/*/}
-                            {/*    /!*                   "text-base  leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"*!/*/}
-                            {/*    /!*           }*!/*/}
-                            {/*    /!*        >*!/*/}
-                            {/*    /!*            {ALL_FILES}*!/*/}
-                            {/*    /!*        </a>*!/*/}
-                            {/*    /!*    </div>*!/*/}
-                            {/*    /!*    <div className="items-end mt-1" onClick={this.changeFileType.bind(this,IMAGE)}>*!/*/}
-                            {/*    /!*        <a*!/*/}
-                            {/*    /!*            className={*!/*/}
-                            {/*    /!*                this.state.currentType === IMAGE*!/*/}
-                            {/*    /!*                    ? "font-bold"*!/*/}
-                            {/*    /!*                    : "font-mono" +*!/*/}
-                            {/*    /!*                    "text-base leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"*!/*/}
-                            {/*    /!*            }*!/*/}
-                            {/*    /!*        >*!/*/}
-                            {/*    /!*            {IMAGE}*!/*/}
-                            {/*    /!*        </a>*!/*/}
-                            {/*    /!*    </div>*!/*/}
-                            {/*    */}
-                            {/*    /!*    <div className="items-end mt-1" onClick={this.changeFileType.bind(this,VIDEO)}>*!/*/}
-                            {/*    /!*        <a*!/*/}
-                            {/*    /!*            className={*!/*/}
-                            {/*    /!*                this.state.currentType === VIDEO*!/*/}
-                            {/*    /!*                    ? "font-bold"*!/*/}
-                            {/*    /!*                    : "font-mono" +*!/*/}
-                            {/*    /!*                    "text-base leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"*!/*/}
-                            {/*    /!*            }*!/*/}
-                            {/*    /!*        >*!/*/}
-                            {/*    /!*            {VIDEO}*!/*/}
-                            {/*    /!*        </a>*!/*/}
-                            {/*    /!*    </div>*!/*/}
-                            {/*    */}
-                            {/*    /!*    <div className="items-end" onClick={this.changeFileType.bind(this,DOCUMENT)}>*!/*/}
-                            {/*    /!*        <a*!/*/}
-                            {/*    /!*            className={*!/*/}
-                            {/*    /!*                this.state.currentType === DOCUMENT*!/*/}
-                            {/*    /!*                    ? "font-bold"*!/*/}
-                            {/*    /!*                    : "font-mono" +*!/*/}
-                            {/*    /!*                    "text-sm  leading-relaxed inline-block mr-4 py-2  uppercase"*!/*/}
-                            {/*    /!*            }*!/*/}
-                            {/*    /!*        >*!/*/}
-                            {/*    /!*            {DOCUMENT}*!/*/}
-                            {/*    /!*        </a>*!/*/}
-                            {/*    /!*    </div>*!/*/}
-                            {/*    */}
-                            {/*    /!*    <div className="items-end" onClick={this.changeFileType.bind(this,OTHER)}>*!/*/}
-                            {/*    /!*        <a*!/*/}
-                            {/*    /!*            className={*!/*/}
-                            {/*    /!*                this.state.currentType === OTHER*!/*/}
-                            {/*    /!*                    ? "font-bold"*!/*/}
-                            {/*    /!*                    : "font-mono" +*!/*/}
-                            {/*    /!*                    "text-sm  leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"*!/*/}
-                            {/*    /!*            }*!/*/}
-                            {/*    /!*        >*!/*/}
-                            {/*    /!*            {OTHER}*!/*/}
-                            {/*    /!*        </a>*!/*/}
-                            {/*    /!*    </div>*!/*/}
-                            {/*    /!*</div>*!/*/}
-                            {/*    <div className="relative w-full mt-10  flex justify-between lg:w-auto lg:static lg:block lg:justify-end ">*/}
-                            {/*        <div>*/}
-                            {/*            */}
-                            {/*        </div>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
                         </div>
                         <div>
-                            <Dialog open={this.state.dialogOpen} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                            <Dialog open={this.state.dialogOpen} onClose={this.handleClose}
+                                    aria-labelledby="form-dialog-title">
                                 <DialogTitle id="form-dialog-title">New Folder</DialogTitle>
                                 <DialogContent>
                                     <DialogContentText>
                                         Please enter the folder name, for better use, Please enter English.
                                     </DialogContentText>
-                                    <TextField
+                                    <input
+                                        className="w-full border-none  bg-transparent focus:border-red-400 outline-none"
                                         onChange={this.folderInputChange}
                                         autoFocus
-                                        margin="dense"
                                         id="name"
-                                        label="Folder Name"
                                         type="text"
-                                        fullWidth
                                     />
                                 </DialogContent>
                                 <DialogActions>
@@ -264,17 +192,43 @@ class DashboardPage extends React.Component  {
 
                 </div>
 
-                <Backdrop className={classes.backdrop} open={this.state.backDropOpen} onClick={this.handleBackDropClose}>
-                    <CircularProgress color="inherit" />
+                <Backdrop className={classes.backdrop} open={this.state.backDropOpen}
+                          onClick={this.handleBackDropClose}>
+                    <CircularProgress color="inherit"/>
                     <h2>  &nbsp;&nbsp; {this.state.backDropTips}</h2>
                 </Backdrop>
             </div>
         );
     }
 
-    search = (value)=>{
-        if(value){
-            const searchResult =  this.state.copyIndex.paths.filter(val => val['name'].match(value));
+    onDrop = (acceptedFiles) => {
+        const index = this.state.index;
+        const paths =  index.paths;
+        const filterFile = this.filterFile;
+        const currentSpaceType = this.state.currentType;
+        onDropToUpload(acceptedFiles, this.state.buckets, this.state.bucketKey, async (data) => {
+            let dataAlreadyInPaths = false;
+            paths.forEach(function (element) {
+                if (element['cid'] === data['cid']) {
+                    dataAlreadyInPaths = true;
+                }
+            });
+            if (!dataAlreadyInPaths) {
+                this.setState({
+                    index: {
+                        ...index,
+                        paths: [...paths, data],
+                        counts: index.counts + 1
+                    },
+                });
+                filterFile(currentSpaceType);
+                await storeIndex(this.state.index, this.state.buckets, this.state.bucketKey);
+            }
+        });
+    };
+    search = (value) => {
+        if (value) {
+            const searchResult = this.state.copyIndex.paths.filter(val => val['name'].match(value));
             this.setState({
                 copyIndex: {
                     ...this.state.index,
@@ -282,21 +236,21 @@ class DashboardPage extends React.Component  {
                     counts: searchResult.length
                 }
             })
-        }else{
+        } else {
             this.filterFile(this.state.currentType)
         }
     }
 
-    filterFile = (value)=>{
+    filterFile = (value) => {
         const fileType = value;
-        if(fileType === ALL_FILES){
+        if (fileType === ALL_FILES) {
             this.setState({
-                copyIndex :this.state.index
+                copyIndex: this.state.index
             })
-        }else if(fileType === IMAGE){
+        } else if (fileType === IMAGE) {
             let copyBucketRoots = []
             this.state.index.paths.forEach(function (value) {
-                if(isFileImage(value['type'])){
+                if (isFileImage(value['type'])) {
                     copyBucketRoots.push(value)
                 }
             })
@@ -307,10 +261,10 @@ class DashboardPage extends React.Component  {
                     counts: copyBucketRoots.length
                 }
             })
-        }else if(fileType === VIDEO){
+        } else if (fileType === VIDEO) {
             let copyBucketRoots = []
             this.state.index.paths.forEach(function (value) {
-                if(isFileVideo(value['type'])){
+                if (isFileVideo(value['type'])) {
                     copyBucketRoots.push(value)
                 }
             })
@@ -321,10 +275,10 @@ class DashboardPage extends React.Component  {
                     counts: copyBucketRoots.length
                 }
             })
-        }else if(fileType === DOCUMENT){
+        } else if (fileType === DOCUMENT) {
             let copyBucketRoots = []
             this.state.index.paths.forEach(function (value) {
-                if(isFileDocument(value['type'])){
+                if (isFileDocument(value['type'])) {
                     copyBucketRoots.push(value)
                 }
             })
@@ -335,10 +289,10 @@ class DashboardPage extends React.Component  {
                     counts: copyBucketRoots.length
                 }
             })
-        }else{
+        } else {
             let copyBucketRoots = []
             this.state.index.paths.forEach(function (value) {
-                if(isFileOther(value['type'])){
+                if (isFileOther(value['type'])) {
                     copyBucketRoots.push(value)
                 }
             })
@@ -350,16 +304,16 @@ class DashboardPage extends React.Component  {
                 }
             })
         }
-    }
+    };
 
-    changeFileType = (value)=>{
+    changeFileType = (value) => {
         this.setState({
-            currentType :value
+            currentType: value
         })
         this.filterFile(value);
     }
 
-    exit = ()=>{
+    exit = () => {
         localStorage.clear();
         this.props.history.replace({pathname: "/landing"})
     };
@@ -370,7 +324,7 @@ class DashboardPage extends React.Component  {
         const fileIndex = value;
         if (fileIndex != null) {
             this.setState({
-                backDropTips:"Delete Files ..."
+                backDropTips: "Delete Files ..."
             });
             this.backDropToggle(true);
             let cids = [];
@@ -401,19 +355,19 @@ class DashboardPage extends React.Component  {
 
             await storeIndex(this.state.index, this.state.buckets, this.state.bucketKey);
             this.setState({
-                backDropTips:"Change Bucket ..."
+                backDropTips: "Change Bucket ..."
             });
             this.backDropToggle(false);
         }
     };
 
-    backDropToggle = (value)=>{
+    backDropToggle = (value) => {
         this.setState({
-            backDropOpen :value
+            backDropOpen: value
         })
     };
 
-    handleBackDropClose = ()=>{
+    handleBackDropClose = () => {
         this.backDropToggle(false);
     };
 
@@ -451,19 +405,19 @@ class DashboardPage extends React.Component  {
         );
     };
 
-    deleteBucketConfirm = async () =>{
+    deleteBucketConfirm = async () => {
         this.setState({
             changeSpaceDialogOpen: true,
-            bucketDialogTips:"Delete this space ?",
-            isChangeBucket : false
+            bucketDialogTips: "Delete this space ?",
+            isChangeBucket: false
         })
     };
 
     handleChangeSpaceConfirm = async () => {
-        if(this.state.isChangeBucket){
+        if (this.state.isChangeBucket) {
             const value = this.state.changeBucket;
             this.handleChangeSpaceClose();
-            if(value!=null){
+            if (value != null) {
                 this.backDropToggle(true);
                 const userIdentity = await getLocalUserIdentity();
                 const {bucketKey, buckets} = await getBucketKeyByBucketRoot(userIdentity, value);
@@ -481,7 +435,7 @@ class DashboardPage extends React.Component  {
                 }
                 this.backDropToggle(false);
             }
-        }else{
+        } else {
             this.handleChangeSpaceClose();
             await this.deleteBucket();
         }
@@ -493,12 +447,14 @@ class DashboardPage extends React.Component  {
             }
         );
         const folderName = this.state.folderName;
+        if(folderName!=null && folderName.length>0){
+            const response = await this.state.buckets.create(folderName);
+            this.setState({
+                bucketRoots: [...this.state.bucketRoots, response.root]
+            })
+        }
         // const path = `${'/'}${folderName}${'/'}${'.seed'}`;
         // await this.state.buckets.pushPath(this.state.bucketKey, path, new Uint8Array(128))
-        const response = await this.state.buckets.create(folderName);
-        this.setState({
-            bucketRoots: [...this.state.bucketRoots, response.root]
-        })
     };
 
     newFolder = (data) => {
@@ -513,40 +469,19 @@ class DashboardPage extends React.Component  {
 
     deleteBucket = async () => {
         this.backDropToggle(true);
-        if(this.state.bucketRoots.length===1){
+        if (this.state.bucketRoots.length === 1) {
             return;
         }
-        await deleteBucket(this.state.buckets,this.state.bucketKey);
+        await deleteBucket(this.state.buckets, this.state.bucketKey);
         const bucketRoots = await bucketList(this.state.buckets);
         deleteBucketZone();
         this.setState({
             changeBucket: bucketRoots[0],
             bucketRoots: bucketRoots,
-            isChangeBucket:true
+            isChangeBucket: true
         });
         await this.handleChangeSpaceConfirm();
     };
-
-
-
-    fileUploadCallback = async (data) => {
-        let dataAlreadyInPaths = false;
-        this.state.index.paths.forEach(function (element) {
-            if (element['cid'] === data['cid']) {
-                dataAlreadyInPaths = true;
-            }
-        });
-        if (!dataAlreadyInPaths) {
-            this.setState({
-                index: {
-                    ...this.state.index,
-                    paths: [...this.state.index.paths, data],
-                    counts: this.state.index.counts + 1
-                },
-            });
-            this.filterFile(this.state.currentType)
-            await storeIndex(this.state.index, this.state.buckets, this.state.bucketKey);
-        }
-    }
 }
-export default withStyles(useStyles, { withTheme: true })(DashboardPage);
+
+export default withStyles(useStyles, {withTheme: true})(DashboardPage);
