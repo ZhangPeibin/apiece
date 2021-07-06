@@ -11,6 +11,17 @@
     margin-left:64px;
     margin-bottom:32px;
 }
+/*relative md:pt-32 pb-32 pt-12*/
+.actionarea{
+    position: relative;
+    padding-bottom: 8rem;
+    padding-top: 1rem;
+}
+@media (min-width: 768px) {
+    .actionarea{
+        padding-top: 5rem;
+    }
+}
 
 
 

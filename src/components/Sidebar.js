@@ -8,6 +8,8 @@ export default function Sidebar(props) {
     const loginOut = props.loginOut;
     const changeFileType = props.changeFileType;
     const currentFileType = props.currentFileType;
+    const newFolder = props.newFolder;
+    const deleteBucket = props.deleteBucket;
     return (
         <>
             <nav
@@ -18,13 +20,13 @@ export default function Sidebar(props) {
                     <button
                         className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
                         type="button"
-                        onClick={() => setCollapseShow("bg-white m-2 py-3 px-6")}
+                        onClick={() => setCollapseShow("bg-white m-2 py-2 px-6")}
                     >
                         <i className="fas fa-bars"></i>
                     </button>
                     {/* Brand */}
                     <Link
-                        className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
+                        className="md:block text-left md:pb-2 text-black mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
                         to="/"
                     >
                         An IPFS Space
@@ -82,8 +84,8 @@ export default function Sidebar(props) {
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                             <li className="items-center" onClick={() => changeFileType(ALL_FILES)}>
                                 <Link
-                                    className={currentFileType === ALL_FILES ? "text-pink-500 font-bold hover:text-pink-600 text-xs uppercase py-3  block" :
-                                        "text-blueGray-700 font-bold hover:text-pink-600 text-xs uppercase py-3  block"}
+                                    className={currentFileType === ALL_FILES ? "text-pink-500 font-bold hover:text-pink-600 text-xs uppercase py-2  block" :
+                                        "text-blueGray-700 font-bold hover:text-pink-600 text-xs uppercase py-2  block"}
                                 >
                                     <i className="fas fa-file opacity-75 mr-2 text-sm"></i> {ALL_FILES}
                                 </Link>
@@ -92,8 +94,8 @@ export default function Sidebar(props) {
                             <li className="items-center">
                                 <Link
                                     onClick={() => changeFileType(IMAGE)}
-                                    className={currentFileType === IMAGE ? "text-pink-500 font-bold hover:text-pink-600 text-xs uppercase py-3  block" :
-                                        "text-blueGray-700 font-bold hover:text-pink-600 text-xs uppercase py-3  block"}>
+                                    className={currentFileType === IMAGE ? "text-pink-500 font-bold hover:text-pink-600 text-xs uppercase py-2  block" :
+                                        "text-blueGray-700 font-bold hover:text-pink-600 text-xs uppercase py-2  block"}>
                                     <i className="fas fa-file-image  mr-2 text-sm"></i> {IMAGE}
                                 </Link>
                             </li>
@@ -102,8 +104,8 @@ export default function Sidebar(props) {
 
                                 <Link
                                     onClick={() => changeFileType(VIDEO)}
-                                    className={currentFileType === VIDEO ? "text-pink-500 font-bold hover:text-pink-600 text-xs uppercase py-3  block" :
-                                        "text-blueGray-700 font-bold hover:text-pink-600 text-xs uppercase py-3  block"}>
+                                    className={currentFileType === VIDEO ? "text-pink-500 font-bold hover:text-pink-600 text-xs uppercase py-2  block" :
+                                        "text-blueGray-700 font-bold hover:text-pink-600 text-xs uppercase py-2  block"}>
                                     <i className="fas fa-file-video  mr-2 text-sm"></i> {VIDEO}
                                 </Link>
                             </li>
@@ -111,8 +113,8 @@ export default function Sidebar(props) {
                             <li className="items-center">
                                 <Link
                                     onClick={() => changeFileType(DOCUMENT)}
-                                    className={currentFileType === DOCUMENT ? "text-pink-500 font-bold hover:text-pink-600 text-xs uppercase py-3  block" :
-                                        "text-blueGray-700 font-bold hover:text-pink-600 text-xs uppercase py-3  block"}>
+                                    className={currentFileType === DOCUMENT ? "text-pink-500 font-bold hover:text-pink-600 text-xs uppercase py-2  block" :
+                                        "text-blueGray-700 font-bold hover:text-pink-600 text-xs uppercase py-2  block"}>
                                     <i className="fas fa-file-archive  mr-2 text-sm"></i> {DOCUMENT}
                                 </Link>
                             </li>
@@ -121,8 +123,8 @@ export default function Sidebar(props) {
 
                                 <Link
                                     onClick={() => changeFileType(OTHER)}
-                                    className={currentFileType === OTHER ? "text-pink-500 font-bold hover:text-pink-600 text-xs uppercase py-3  block" :
-                                        "text-blueGray-700 font-bold hover:text-pink-600 text-xs uppercase py-3  block"}>
+                                    className={currentFileType === OTHER ? "text-pink-500 font-bold hover:text-pink-600 text-xs uppercase py-2  block" :
+                                        "text-blueGray-700 font-bold hover:text-pink-600 text-xs uppercase py-2  block"}>
                                     <i className="fas fa-circle  mr-2 text-sm"></i> {OTHER}
                                 </Link>
                             </li>
@@ -131,29 +133,25 @@ export default function Sidebar(props) {
                         {/* Divider */}
                         <hr className="my-4 md:min-w-full"/>
                         {/* Heading */}
-                        <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                            Documentation
+                        <h6 className="md:min-w-full text-gray text-sm uppercase font-bold block pt-1 pb-4 no-underline">
+                            Space ACTIONS
                         </h6>
                         {/* Navigation */}
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
                             <li className="inline-flex">
                                 <a target="_blank"
-                                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                                   href="https://ipfs.io"> IPFS </a>
-
+                                   onClick={newFolder}
+                                   className="text-gray-500 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
+                                   >
+                                        New Space
+                                </a>
                             </li>
 
                             <li className="inline-flex">
                                 <a target="_blank"
-                                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                                   href="https://filecoin.io/zh-cn/"> FileCoin </a>
-                            </li>
-
-                            <li className="inline-flex">
-
-                                <a target="_blank"
-                                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                                   href="https://www.filswan.com/"> Filswan </a>
+                                   onClick={deleteBucket }
+                                   className="text-gray-500 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
+                                   > Delete Space </a>
                             </li>
                         </ul>
 
@@ -161,10 +159,10 @@ export default function Sidebar(props) {
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
                             <li className="inline-flex">
                                 <Link
-                                    className="text-blueGray-700 text-xs uppercase py-3 font-bold block"
+                                    className="text-blueGray-700 text-xs uppercase py-2 font-bold block"
                                     onClick={e => loginOut()}
                                 >
-                                    <i className="fas fa-trash text-blueGray-700 mr-2 text-sm"></i> LOGIN OUT
+                                    <i className="fa fa-trash mr-2 text-sm" ></i> LOGIN OUT
                                 </Link>
                             </li>
 

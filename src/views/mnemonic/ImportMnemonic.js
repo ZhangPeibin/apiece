@@ -96,7 +96,7 @@ export default function ImportMnemonicPage(props) {
                                     space<br/>
                                     Do not disclose your Wallet recovery phrase to others<br/>
                                     Once anyone has the wallet recovery phrase for the
-                                    account, they can view the data you uploaded. </p>
+                                    account <br/>they can view the data you uploaded. </p>
                             </div>
 
                             <Card className="p-4 mt-10 w-1/2">
@@ -104,12 +104,9 @@ export default function ImportMnemonicPage(props) {
                                     onChange={function (value) {
                                         setInput(value.target.value);
                                     }}
-                                    className="border-gray-600  bg-transparent focus:border-gray-600 outline-none"
-                                    label="Wallet recovery phrase"
-                                    id="outlined-textarea"
+                                    className="resize-none outline-none
+                                    w-full bg-white border-solid focus:outline-none focus:border-solid focus:border-solid"
                                     placeholder="wallet recovery phrase"
-                                    multiline
-                                    variant="outlined"
                                 />
                             </Card>
 
